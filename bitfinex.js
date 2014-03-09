@@ -49,7 +49,24 @@ module.exports = Bitfinex = (function() {
       method: "POST",
       headers: headers,
       timeout: 15000
-    }, cb);
+    }, function(err, response, body) {
+      var error, result;
+      if (err || response.statusCode !== 200) {
+        return cb(new Error(err != null ? err : {
+          err: response.statusCode
+        }));
+      }
+      try {
+        result = JSON.parse(body);
+      } catch (_error) {
+        error = _error;
+        return cb(new Error(error));
+      }
+      if (result.success === 0) {
+        return cb(new Error(result.error));
+      }
+      return cb(null, result);
+    });
   };
 
   Bitfinex.prototype.make_public_request = function(path, cb) {
@@ -59,7 +76,24 @@ module.exports = Bitfinex = (function() {
       url: url,
       method: "GET",
       timeout: 15000
-    }, cb);
+    }, function(err, response, body) {
+      var error, result;
+      if (err || response.statusCode !== 200) {
+        return cb(new Error(err != null ? err : {
+          err: response.statusCode
+        }));
+      }
+      try {
+        result = JSON.parse(body);
+      } catch (_error) {
+        error = _error;
+        return cb(new Error(error));
+      }
+      if (result.success === 0) {
+        return cb(new Error(result.error));
+      }
+      return cb(null, result);
+    });
   };
 
   Bitfinex.prototype.ticker = function(symbol, cb) {
