@@ -43,13 +43,13 @@ module.exports = class Bitfinex
 			'X-BFX-PAYLOAD': payload
 			'X-BFX-SIGNATURE': signature
 
-		request({ url: url, method: "POST", headers: headers }, cb)   
+		request({ url: url, method: "POST", headers: headers, timeout: 15000 }, cb)   
 
 	make_public_request: (path, cb) ->
 
 		url = @url + '/v1/' + path	
 
-		request({ url: url, method: "GET"}, cb)    
+		request({ url: url, method: "GET", timeout: 15000}, cb)    
 
 	#####################################
 	########## PUBLIC REQUESTS ##########
