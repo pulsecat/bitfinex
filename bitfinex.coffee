@@ -51,8 +51,8 @@ module.exports = class Bitfinex
       catch error
         return cb(new Error(error))
 
-      if result.success == 0
-        return cb new Error(result.error)
+      if result.message?
+        return cb new Error(result.message)
 
       cb null, result
       
@@ -69,8 +69,8 @@ module.exports = class Bitfinex
       catch error
         return cb(new Error(error))
 
-      if result.success == 0
-        return cb new Error(result.error)
+      if result.message?
+        return cb new Error(result.message)
 
       cb null, result
 
