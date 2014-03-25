@@ -180,7 +180,7 @@ module.exports = Bitfinex = (function() {
   };
 
   Bitfinex.prototype.active_orders = function(cb) {
-    return this.make_request('orders/', {}, cb);
+    return this.make_request('orders', {}, cb);
   };
 
   Bitfinex.prototype.active_positions = function(cb) {
