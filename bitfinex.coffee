@@ -163,7 +163,7 @@ module.exports = class Bitfinex
 
 	active_orders: (cb) ->
 
-		@make_request('orders/', {}, cb)  
+		@make_request('orders', {}, cb)  
 
 	active_positions: (cb) ->
 
