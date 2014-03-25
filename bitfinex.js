@@ -62,8 +62,8 @@ module.exports = Bitfinex = (function() {
         error = _error;
         return cb(new Error(error));
       }
-      if (result.success === 0) {
-        return cb(new Error(result.error));
+      if (result.message != null) {
+        return cb(new Error(result.message));
       }
       return cb(null, result);
     });
@@ -89,8 +89,8 @@ module.exports = Bitfinex = (function() {
         error = _error;
         return cb(new Error(error));
       }
-      if (result.success === 0) {
-        return cb(new Error(result.error));
+      if (result.message != null) {
+        return cb(new Error(result.message));
       }
       return cb(null, result);
     });
