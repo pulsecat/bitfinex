@@ -14,7 +14,7 @@ module.exports = Bitfinex = (function() {
     this.url = "https://api.bitfinex.com";
     this.key = key;
     this.secret = secret;
-    this.nonce = this.nonceGenerator;
+    this.nonce = nonceGenerator;
   }
 
   Bitfinex.prototype.make_request = function(sub_path, params, cb) {

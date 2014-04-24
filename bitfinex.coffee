@@ -12,7 +12,7 @@ module.exports = class Bitfinex
     @url = "https://api.bitfinex.com"
     @key = key
     @secret = secret
-    @nonce = @nonceGenerator
+    @nonce = nonceGenerator
 
 	make_request: (sub_path, params, cb) ->
     if !@key or !@secret
