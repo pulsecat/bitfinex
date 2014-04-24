@@ -10,16 +10,12 @@ crypto = require('crypto');
 qs = require('querystring');
 
 module.exports = Bitfinex = (function() {
-  function Bitfinex(key, secret) {
+  function Bitfinex(key, secret, nonceGenerator) {
     this.url = "https://api.bitfinex.com";
     this.key = key;
     this.secret = secret;
-    this.nonce = Math.round((new Date()).getTime() / 1000);
+    this.nonce = this.nonceGenerator;
   }
-
-  Bitfinex.prototype._nonce = function() {
-    return this.nonce++;
-  };
 
   Bitfinex.prototype.make_request = function(sub_path, params, cb) {
     var headers, key, nonce, path, payload, signature, url, value;
@@ -28,7 +24,12 @@ module.exports = Bitfinex = (function() {
     }
     path = '/v1/' + sub_path;
     url = this.url + path;
-    nonce = JSON.stringify(this._nonce());
+    if (this.nonce != null) {
+      nonce = this.nonce();
+    } else {
+      nonce = Math.round((new Date()).getTime() / 1000);
+    }
+    nonce = JSON.stringify(nonce);
     payload = {
       request: path,
       nonce: nonce

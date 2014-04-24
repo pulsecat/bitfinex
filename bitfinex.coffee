@@ -8,42 +8,41 @@ qs = require 'querystring'
 
 module.exports = class Bitfinex
 
-	constructor: (key, secret) ->
-
-		@url = "https://api.bitfinex.com"
-		@key = key
-		@secret = secret
-		@nonce = Math.round((new Date()).getTime() / 1000)
-
-	_nonce: () ->
-
-		return @nonce++
+	constructor: (key, secret, nonceGenerator) ->
+    @url = "https://api.bitfinex.com"
+    @key = key
+    @secret = secret
+    @nonce = @nonceGenerator
 
 	make_request: (sub_path, params, cb) ->
+    if !@key or !@secret
+      return cb(new Error("missing api key or secret"))
 
-		if !@key or !@secret
-			return cb(new Error("missing api key or secret"))
+    path = '/v1/' + sub_path
+    url = @url + path
+    if @nonce?
+      nonce = @nonce()
+    else
+      nonce = Math.round((new Date()).getTime() / 1000)
+      
+    nonce = JSON.stringify(nonce)
 
-		path = '/v1/' + sub_path
-		url = @url + path
-		nonce = JSON.stringify(@_nonce())
+    payload = 
+      request: path
+      nonce: nonce
 
-		payload = 
-			request: path
-			nonce: nonce
+    for key, value of params
+      payload[key] = value
 
-		for key, value of params
-			payload[key] = value
+    payload = new Buffer(JSON.stringify(payload)).toString('base64')
+    signature = crypto.createHmac("sha384", @secret).update(payload).digest('hex')
 
-		payload = new Buffer(JSON.stringify(payload)).toString('base64')
-		signature = crypto.createHmac("sha384", @secret).update(payload).digest('hex')
+    headers = 
+      'X-BFX-APIKEY': @key
+      'X-BFX-PAYLOAD': payload
+      'X-BFX-SIGNATURE': signature
 
-		headers = 
-			'X-BFX-APIKEY': @key
-			'X-BFX-PAYLOAD': payload
-			'X-BFX-SIGNATURE': signature
-
-		request { url: url, method: "POST", headers: headers, timeout: 15000 }, (err,response,body)->
+    request { url: url, method: "POST", headers: headers, timeout: 15000 }, (err,response,body)->
       if err || response.statusCode != 200
         return cb new Error(err ? err : response.statusCode)
       try
