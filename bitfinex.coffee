@@ -43,7 +43,7 @@ module.exports = class Bitfinex
       'X-BFX-SIGNATURE': signature
 
     request { url: url, method: "POST", headers: headers, timeout: 15000 }, (err,response,body)->
-      if err || response.statusCode != 200
+      if err 
         return cb new Error(err ? err : response.statusCode)
       try
         result = JSON.parse(body)

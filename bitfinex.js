@@ -52,7 +52,7 @@ module.exports = Bitfinex = (function() {
       timeout: 15000
     }, function(err, response, body) {
       var error, result;
-      if (err || response.statusCode !== 200) {
+      if (err) {
         return cb(new Error(err != null ? err : {
           err: response.statusCode
         }));
