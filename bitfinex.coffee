@@ -168,7 +168,7 @@ module.exports = class Bitfinex
 
 	active_positions: (cb) ->
 
-		@make_request('positions/', {}, cb)  
+		@make_request('positions', {}, cb)  
 
 	past_trades: (symbol, timestamp, limit_trades, cb) ->
 
@@ -214,16 +214,12 @@ module.exports = class Bitfinex
 	 	@make_request('credits', {}, cb) 
 
 	wallet_balances: (cb) ->
-
-		@make_request('balances', {}, cb)
-
+    @make_request('balances', {}, cb)
 
   account_infos: (cb) ->
-
     @make_request('account_infos', {}, cb)
 
   margin_infos: (cb) ->
-
     @make_request('margin_infos', {}, cb)
 
 
