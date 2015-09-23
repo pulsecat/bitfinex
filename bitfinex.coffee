@@ -218,3 +218,14 @@ module.exports = class Bitfinex
 		@make_request('balances', {}, cb)
 
 
+  account_infos: (cb) ->
+
+    @make_request('account_infos', {}, cb)
+
+  margin_infos: (cb) ->
+
+    @make_request('margin_infos', {}, cb)
+
+
+
+
